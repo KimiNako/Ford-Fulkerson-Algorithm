@@ -1,7 +1,6 @@
 all : build
 
 build : graph gfile 
-	clear
 	ocamlc -o ftest graph.cmo gfile.cmo ftest.ml	
 
 graph : graph.mli graph.ml

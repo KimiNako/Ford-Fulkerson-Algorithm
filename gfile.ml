@@ -72,3 +72,25 @@ let from_file path =
   close_in infile ;
   final_graph
   
+
+let write_arc idsrc iddest lbl = idsrc^"->"^iddest^" [ label = \""^lbl^"\" ];\n"
+
+let rec looparc acu id outarcs =
+	match outarcs with
+	| [] -> acu
+	| (iddest, lbl) :: rest -> looparc ((write_arc id iddest lbl)^acu) id rest 
+ 
+let export gr path = 
+	let ff= open_out path in
+	let arcs = v_fold gr looparc "" in
+	fprintf ff "digraph finite_state_machine {\n
+	rankdir=LR;\n
+	size=\"8,5\"\n
+	node [shape = circle];\n %s\n\"}\n" arcs
+
+
+
+
+
+
+
