@@ -1,0 +1,25 @@
+** To do list **
+
+
+
+
+
+
+
+** How to compile a file with ocamlc **
+$ ocamlc -c gfile.mli
+$ ocamlc -c gfile.ml
+$ ocamlc -o ftest graph.cmo gfile.cmo ftest.ml
+
+** How to build a file with ocamlbuil **
+$ ocamlbuild ftest.byte
+
+** How to enable ocaml-mode in emacs **
+$ opam install tuareg
+$ emacs ~/emacs
+Add the line given by tuareg 
+
+** Evaluation **
+- Code 
+- Demo
+- Deadline : Before Chritsmas

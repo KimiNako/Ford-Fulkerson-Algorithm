@@ -41,6 +41,21 @@ let v_iter gr f = List.iter (fun (id, out) -> f id out) gr
 
 let v_fold gr f acu = List.fold_left (fun acu (id, out) -> f acu id out) acu gr
 
-let map gr f = failwith "Graph.map: to be implemented by you."
+let rec create_nodes acu gr = match gr with
+  |[]-> acu
+  |(id, out_arc)::rest -> create_nodes (add_node acu id)  rest
 
+let rec create_arcs acu id1 listarcs f = match listarcs with
+  | []-> acu
+  | (id2, cost)::rest -> create_arcs (add_arc acu id1 id2 (f cost)) id1 rest f
+
+let map gr f = 
+  let gr2 = create_nodes [] gr 
+  in
+  let rec loop acu gr f =
+       match gr with
+       | [] -> acu
+       | (id1, listarcs)::rest -> loop (create_arcs acu id1 listarcs f) rest f
+  in
+  loop gr2 gr f 
 
