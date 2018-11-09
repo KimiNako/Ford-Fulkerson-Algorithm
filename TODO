@@ -1,9 +1,12 @@
 ** To do list **
+Test Graph.map
+Test Gfile.export
 
 
 
 
-
+** How to use ftest **
+$ ./ftest graph1 "" "" graph2
 
 
 ** How to compile a file with ocamlc **
