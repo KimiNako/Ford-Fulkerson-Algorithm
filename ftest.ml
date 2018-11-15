@@ -19,8 +19,14 @@ let () =
   (* Open file *)
   let graph = Gfile.from_file infile in
 
+	(* Test	map : add "0" at the end of every label *)
+	let graph2 = Graph.map graph (fun x -> x^"0") in
+
   (* Rewrite the graph that has been read. *)
-  let () = Gfile.write_file outfile graph in
+  let () = Gfile.write_file outfile graph2 in ();
+
+	(* Test export : write graph2 in a dot format *)
+	let () = Gfile.export graph2 (outfile^".gv") in
 
   ()
 
