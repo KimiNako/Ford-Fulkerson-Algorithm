@@ -23,12 +23,15 @@ let () =
   let graph2 = Graph.map graph (fun x -> x^"0") in
 
   (* Rewrite the graph that has been read. *)
-  let () = Gfile.write_file outfile graph2 in ();
+  let () = Gfile.write_file outfile graph in ();
 
   (* Test export : write graph in a dot format *)
   let () = Gfile.export graph2 (outfile^"_map.gv") in ();
   let () = Gfile.export graph (outfile^".gv") in  ();
 	
-  let path2 = find_path graph [] _source _sink in
-	let () =List.map( Print.printf "%s" (List.map (string_of_int path2)) )()
+	(* Test find_path *)
+	let graph_int = Graph.map graph int_of_string in
+  let path2 = find_path graph_int [] _source _sink in
+	let () = List.iter (fun x -> Printf.printf "%s" x) path2 in 
+	()
 
