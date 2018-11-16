@@ -32,6 +32,8 @@ let () =
 	(* Test find_path *)
 	let graph_int = Graph.map graph int_of_string in
   let path2 = find_path graph_int [] _source _sink in
+	Printf.printf "Path found :";
 	let () = List.iter (fun x -> Printf.printf "%s" x) path2 in 
-	()
+	();
+	Printf.printf "\n\n";
 
