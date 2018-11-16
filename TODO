@@ -6,7 +6,7 @@ Test Gfile.export
 
 
 ** How to use ftest **
-$ ./ftest graph1 "" "" graph2
+$ ./ftest.byte graph1 "" "" graph2
 It generates a graph2.gv
 
 **How to use dot **
@@ -16,6 +16,9 @@ dot -Tpng graph2.gv > graph2.png
 $ ocamlc -c gfile.mli
 $ ocamlc -c gfile.ml
 $ ocamlc -o ftest graph.cmo gfile.cmo ftest.ml
+
+** How to compile a file with ocamlc v2**
+$ ocamlbuild
 
 ** How to build a file with ocamlbuil **
 $ ocamlbuild ftest.byte
