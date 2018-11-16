@@ -1,5 +1,5 @@
 open Graph
-
+open Ff_algorithm
 let () =
 
   if Array.length Sys.argv <> 5 then
@@ -27,8 +27,8 @@ let () =
 
   (* Test export : write graph in a dot format *)
   let () = Gfile.export graph2 (outfile^"_map.gv") in ();
-  let () = Gfile.export graph (outfile^".gv") in
-
-  ()
-
+  let () = Gfile.export graph (outfile^".gv") in  ();
+	
+  let path2 = find_path graph [] _source _sink in
+	let () =List.map( Print.printf "%s" (List.map (string_of_int path2)) )()
 
