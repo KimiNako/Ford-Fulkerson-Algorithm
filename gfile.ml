@@ -86,7 +86,7 @@ let export gr path =
 	fprintf ff "digraph finite_state_machine {\n
 	rankdir=LR;\n
 	size=\"8,5\"\n
-	node [shape = circle];\n %s\n\"}\n" arcs
+	node [shape = circle];\n %s\n}\n" arcs
 
 
 

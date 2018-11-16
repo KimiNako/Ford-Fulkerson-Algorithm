@@ -7,7 +7,10 @@ Test Gfile.export
 
 ** How to use ftest **
 $ ./ftest graph1 "" "" graph2
+It generates a graph2.gv
 
+**How to use dot **
+dot -Tpng graph2.gv > graph2.png
 
 ** How to compile a file with ocamlc **
 $ ocamlc -c gfile.mli
@@ -21,6 +24,9 @@ $ ocamlbuild ftest.byte
 $ opam install tuareg
 $ emacs ~/emacs
 Add the line given by tuareg 
+
+
+
 
 ** Evaluation **
 - Code 
