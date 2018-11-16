@@ -28,7 +28,16 @@ $ opam install tuareg
 $ emacs ~/emacs
 Add the line given by tuareg 
 
+** Issues **
+Cmd : $ make
 
+Error Message : 
+ocamlbuild ftest.byte
+Exception
+  Sys_error("/home/vanhulle/Bureau/Ford-Fulkerson-Algorithm/ftest.byte: No such file or directory").
+
+Solution : 
+$ rm ftest.byte
 
 
 ** Evaluation **
