@@ -30,14 +30,14 @@ let write_file path graph =
   close_out ff ;
   ()
 
-(* Reads a line with a node. *)
+(* Read a line with a node. *)
 let read_node graph line =
   try Scanf.sscanf line "v %s" (fun id -> add_node graph id)
   with e ->
     Printf.printf "Cannot read node in line - %s:\n%s\n" (Printexc.to_string e) line ;
     failwith "from_file"
 
-(* Reads a line with an arc. *)
+(* Read a line with an arc. *)
 let read_arc graph line =
   try Scanf.sscanf line "e \"%s@\" %s %s" (fun label id1 id2 -> add_arc graph id1 id2 label)
   with e ->
@@ -72,14 +72,16 @@ let from_file path =
   close_in infile ;
   final_graph
   
-
+(* Return an arc in the following format: id1 -> id2 [ label = value-of-label ]; *) 
 let write_arc idsrc iddest lbl = idsrc^"->"^iddest^" [ label = \""^lbl^"\" ];\n"
 
+(* Return a list of arcs in the following format: id1 -> id2 [ label = value-of-label ]; *) 
 let rec looparc acu id outarcs =
 	match outarcs with
 	| [] -> acu
 	| (iddest, lbl) :: rest -> looparc ((write_arc id iddest lbl)^acu) id rest 
- 
+
+(* Export/Write a graph in a file*) 
 let export gr path = 
 	let ff= open_out path in
 	let arcs = v_fold gr looparc "" in
