@@ -2,7 +2,8 @@ open Graph
     
 type path = id list
 
-(* return a path reversed between the source and the sink *)
+
+(* Return a path going from source to sink but the order of nodes is reversed. *)
 let rec find_path graph path source sink =
  
 	(* if the sink is achieved, the path is returned *)
