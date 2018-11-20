@@ -12,3 +12,6 @@ type path = id list
 val find_path: int graph -> id list -> id -> id -> path
 
 
+(* Return the smallest label among all labels of a given path from the residual graph *)
+(* Find the incrementation of flow *)
+val find_min_arc : ('a*'b) graph -> id list -> 'b -> 'b
