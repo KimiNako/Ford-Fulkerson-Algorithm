@@ -4,7 +4,7 @@ type path = id list
 
 
 (* Return a path going from source to sink but the order of nodes is reversed. *)
-let rec find_path graph path source sink =
+let rec find_path_bis graph path source sink =
  
 	(* if the sink is achieved, the path is returned *)
 	if (sink=source) then (source::path) 
@@ -26,15 +26,19 @@ let rec find_path graph path source sink =
 									| aux -> aux (* a path has been found ! *)
 		in loop arcs_src
 
+(* Return a path going from source to sink *)
+let find_path graph path source sink =
+	List.rev (find_path_bis graph path source sink)
+
 let rec find_min_arc graph path acu =
 	match path with
 		| [] -> acu
-		| id2::id1::rest -> 
+		| id1::id2::rest -> 
 			let cost = find_arc graph id1 id2 in
 				match cost with
 					| None -> raise Not_found
-					| Some (_,cost) -> if (cost<acu) then find_min_arc graph (id1::rest) cost 
-									else find_min_arc graph (id1::rest) acu
+					| Some (_,cost) -> if (cost<acu) then find_min_arc graph (id2::rest) cost 
+									else find_min_arc graph (id2::rest) acu
 
 let update_residual_graph graph residual_graph path min =
 	let rec loop path new_graph = 
