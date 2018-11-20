@@ -20,7 +20,7 @@ let rec find_path_bis graph path source sink =
 					(* if the node reached is already in the path, the loop is continued *)
 					if (List.exists (fun x -> (x=id)) path) then loop rest
 					(* else a path through this node is searched *)
-					else let aux = find_path graph (source::path) id sink in
+					else let aux = find_path_bis graph (source::path) id sink in
 								match aux with
 									| [] -> loop rest (* no path, the research is continued *)
 									| aux -> aux (* a path has been found ! *)
@@ -39,7 +39,7 @@ let rec find_min_arc graph path acu =
 					| None -> raise Not_found
 					| Some (_,cost) -> if (cost<acu) then find_min_arc graph (id2::rest) cost 
 									else find_min_arc graph (id2::rest) acu
-
+(*
 let update_residual_graph graph residual_graph path min =
 	let rec loop path new_graph = 
 		match path with
@@ -55,10 +55,10 @@ let update_residual_graph graph residual_graph path min =
 
 (* arc label of residual_graph : (capacity, value) *)
 let Ford_Fulkerson_Algorithm graph source sink =
-	let flow_graph = map graph (fun x -> (x,0) in
+	(*let flow_graph = map graph (fun x -> (x,0) in*)
 	let residual_graph = map graph (fun x -> (x, x)) in
 	let rec loop =
 		let path = find_path residual_graph [] source sink in
 		let min = find_min_arc residual_graph path 1000 in (*max value ?? *)
-		
+	*)	
 
