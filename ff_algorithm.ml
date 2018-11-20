@@ -2,6 +2,8 @@ open Graph
     
 type path = id list
 
+type residual_graph = ('a*'b) graph
+
 
 (* Return a path going from source to sink but the order of nodes is reversed. *)
 let rec find_path_bis graph path source sink =
@@ -40,13 +42,16 @@ let rec find_min_arc graph path acu =
 					| Some (_,cost) -> if (cost<acu) then find_min_arc graph (id2::rest) cost 
 									else find_min_arc graph (id2::rest) acu
 (*
-let update_residual_graph graph residual_graph path min =
+let update_residual_graph residual_graph path min =
 	let rec loop path new_graph = 
 		match path with
 			| [] -> new_graph
 			| id1::id2::rest -> 
 				let residual_arc = find_arc residual_graph id1 id2 in
-				let graph_arc = find_arc graph id2 id1 in (* a finir !!!!!!!!!*) 
+					match residual_arc with
+						| None -> raise Not_found
+						| Some
+				(*let graph_arc = find_arc graph id2 id1 in *)
 	in loop path empty_graph
 
 
@@ -60,5 +65,5 @@ let Ford_Fulkerson_Algorithm graph source sink =
 	let rec loop =
 		let path = find_path residual_graph [] source sink in
 		let min = find_min_arc residual_graph path 1000 in (*max value ?? *)
-	*)	
+	*)
 
