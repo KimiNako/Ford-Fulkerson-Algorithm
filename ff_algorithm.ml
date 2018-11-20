@@ -41,16 +41,20 @@ let rec find_min_arc graph path acu =
 					| None -> raise Not_found
 					| Some (_,cost) -> if (cost<acu) then find_min_arc graph (id2::rest) cost 
 									else find_min_arc graph (id2::rest) acu
+
 (*
 let update_residual_graph residual_graph path min =
-	let rec loop path new_graph = 
+	let rec loop path graph = 
 		match path with
-			| [] -> new_graph
+			| [] -> graph
 			| id1::id2::rest -> 
 				let residual_arc = find_arc residual_graph id1 id2 in
 					match residual_arc with
 						| None -> raise Not_found
-						| Some
+						| Some (capacity, value) -> 
+							let new_graph = add_arc graph id1 id2 (capacity, value+min) in
+							let new_graph2 = add_arc new_graph id2 id1 (capacity, value-min) in
+							loop (id2::rest) new_graph2
 				(*let graph_arc = find_arc graph id2 id1 in *)
 	in loop path empty_graph
 
