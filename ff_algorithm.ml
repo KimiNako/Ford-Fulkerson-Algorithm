@@ -1,8 +1,10 @@
 open Graph
     
 type path = id list
-
-type flow_graph = ('a*'b) graph
+type capacity = int
+type value = int
+type flow = int
+type flow_graph = (capacity * value) graph
 
 (* Return a path going from source to sink but the order of nodes is reversed. *)
 let rec find_path_bis graph path source sink =
@@ -66,7 +68,7 @@ let calculate_max_flow flow_graph source sink =
     (* TO DO *) 0
 
 (* arc label of flow_graph : (capacity, value) *)
-let Ford_Fulkerson_Algorithm graph source sink =
+let ford_fulkerson_algorithm graph source sink =
 	let init_flow_graph = map graph (fun x -> (x,0)) in
 	let rec loop flow_graph =
 		let path = find_path flow_graph [] source sink in
