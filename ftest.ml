@@ -30,10 +30,24 @@ let () =
   let () = Gfile.export graph (outfile^".gv") in  ();
 	
 	(* Test find_path *)
-	let graph_int = Graph.map graph int_of_string in
-  let path2 = find_path graph_int [] _source _sink in
-	Printf.printf "Path found :";
-	let () = List.iter (fun x -> Printf.printf "%s" x) path2 in 
-	();
-	Printf.printf "\n\n";
+  let graph_int = Graph.map graph int_of_string in
+  	let path2 = find_path graph_int [] _source _sink in
+			Printf.printf "Path found :";
+			let () = List.iter (fun x -> Printf.printf "%s" x) path2 in 
+			();
+			Printf.printf "\n\n";
 
+	(* Test find_min_arc *)
+	(* let res_graph = Graph.empty_graph in
+  let res_graph = Graph.add_node res_graph "0" in
+  let res_graph = Graph.add_node res_graph "1" in
+  let res_graph = Graph.add_node res_graph "2" in
+	let res_graph = Graph.add_node res_graph "3" in
+
+	let res_graph = Graph.add_arc res_graph "0" "1" (42,42)  in
+  let res_graph = Graph.add_arc res_graph "0" "2" (3,3)  in
+  let res_graph = Graph.add_arc res_graph "1" "2" (3,3)  in
+	let res_graph = Graph.add_arc res_graph "1" "3" (1,1) in
+	let path3 = find_path res_graph [] "0" "3" in
+	let min = Ff_algorithm.find_min_arc res_graph path3 1000000000 in ();
+*)
