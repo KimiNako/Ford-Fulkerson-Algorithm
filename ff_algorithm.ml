@@ -44,9 +44,15 @@ let rec find_min_arc res_graph path acu =
 					| Some (_,cost) -> if (cost<acu) then find_min_arc res_graph (id2::rest) cost 
 									else find_min_arc res_graph (id2::rest) acu
 
+(*let convert_Nodepath_to_Arcpath path = match path with
+	| [] -> []
+	| id2::id1::rest -> 
+	| _ -> []
 
-let update_flow_graph flow_graph path min =
-	let rec loop path graph = 
+let update_flow_graph flow_graph path increment =
+
+*)
+(*	let rec loop path graph = 
 		match path with
 			| [] -> graph
 			| id1::id2::rest -> 
@@ -60,20 +66,25 @@ let update_flow_graph flow_graph path min =
 				(*let graph_arc = find_arc graph id2 id1 in *)
 	in loop path empty_graph
 
-
+*)
 (*let rec create_residual_graph graph1 graph2 = *)
 
 
-let calculate_max_flow flow_graph source sink =
-    (* TO DO *) 0
+let calculate_max_flow residual_graph source = 
+	let arcs_src = out_arcs flow_graph source in
+		let rec max = function
+ 		| [] -> 0
+		| (_,label)::rest -> label+max(rest)
+		in max arcs_src
 
+	
 (* arc label of flow_graph : (capacity, value) *)
 let ford_fulkerson_algorithm graph source sink =
 	let init_flow_graph = map graph (fun x -> (x,0)) in
 	let rec loop flow_graph =
 		let path = find_path flow_graph [] source sink in
             match path with
-                | [] -> calculate_max_flow flow_graph source sink
+                | [] -> calculate_max_flow flow_graph source
                 | path ->
 		            let min = find_min_arc flow_graph path 1000 in (*max value ?? *)
                     let new_flow_graph = update_flow_graph flow_graph path min) in
