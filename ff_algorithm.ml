@@ -70,8 +70,8 @@ let update_flow_graph flow_graph path increment =
 (*let rec create_residual_graph graph1 graph2 = *)
 
 
-let calculate_max_flow residual_graph source = 
-	let arcs_src = out_arcs flow_graph source in
+let calculate_max_flow residual_graph sink = 
+	let arcs_src = out_arcs residual_graph sink in
 		let rec max = function
  		| [] -> 0
 		| (_,label)::rest -> label+max(rest)
