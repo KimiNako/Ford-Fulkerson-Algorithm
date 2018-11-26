@@ -80,15 +80,15 @@ let calculate_max_flow residual_graph sink =
 	
 (* arc label of flow_graph : (capacity, value) *)
 let ford_fulkerson_algorithm graph source sink =
-	let init_flow_graph = map graph (fun x -> (x,0)) in
-	let rec loop flow_graph =
-		let path = find_path flow_graph [] source sink in
+	let init_residual_graph = map graph (fun x -> (x,x)) in
+	let rec loop residual_graph =
+		let path = find_path residual_graph [] source sink in
             match path with
-                | [] -> calculate_max_flow flow_graph source
+                | [] -> calculate_max_flow residual_graph sink (* There are no more path so we calculate flow *)
                 | path ->
-		            let min = find_min_arc flow_graph path 1000 in (*max value ?? *)
-                    let new_flow_graph = update_flow_graph flow_graph path min) in
-                    loop new_flow_graph
-    in loop init_flow_graph
+		            let min = find_min_arc residual_graph path 1000 in (*max value ?? *)
+                    let new_residual_graph = update_residual_graph residual_graph path min) in
+                    loop residual_graph
+    in loop init_residual_graph
 	
 
