@@ -19,9 +19,11 @@ let rec find_path_bis graph path source sink =
 		let rec loop arcs_src =	
 			match arcs_src with
 				| [] -> [] (* no path found *)
-				| (id, _)::rest -> 
-					(* if the node reached is already in the path, the loop is continued *)
-					if (List.exists (fun x -> (x=id)) path) then loop rest
+				| (id, (_,value))::rest -> 
+					(* if the value of the arc is null *)
+                    (* or if the node reached is already in the path,  *)
+                    (* the loop is continued *)
+					if (value = 0) || (List.exists (fun x -> (x=id)) path) then loop rest
 					(* else a path through this node is searched *)
 					else let aux = find_path_bis graph (source::path) id sink in
 								match aux with
@@ -52,19 +54,20 @@ let rec find_min_arc residual_graph path acu =
 
 let update_residual_graph flow_graph path increment =
 
-let rec loop path graph = 
+    (* create modified arcs *)
+    let rec loop path graph = 
 		match path with
 			| [] -> graph
 			| id1::id2::rest -> 
-				let flow_arc = find_arc flow_graph id1 id2 in
-					match flow_arc with
+				let residual_arc = find_arc residual_graph id1 id2 in
+					match residual_arc with
 						| None -> raise Not_found
 						| Some (capacity, value) -> 
 							let new_graph = add_arc graph id1 id2 (capacity, value+min) in
 							let new_graph2 = add_arc new_graph id2 id1 (capacity, value-min) in
 							loop (id2::rest) new_graph2
-				(*let graph_arc = find_arc graph id2 id1 in *)
-	in loop path empty_graph
+    in let new_arcs_graph = loop path empty_graph
+        
 
 
 (*let rec create_residual_graph graph1 graph2 = *)
