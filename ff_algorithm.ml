@@ -4,7 +4,7 @@ type path = id list
 type capacity = int
 type value = int
 type flow = int
-type flow_graph = (capacity * value) graph
+type residual_graph = (capacity * value) graph
 
 (* Return a path going from source to sink but the order of nodes is reversed. *)
 let rec find_path_bis graph path source sink =
@@ -33,26 +33,26 @@ let rec find_path_bis graph path source sink =
 let find_path graph path source sink =
 	List.rev (find_path_bis graph path source sink)
 
-let rec find_min_arc res_graph path acu =
+let rec find_min_arc residual_graph path acu =
 	match path with
 		| [] 
 		| _::[] -> acu
 		| id1::id2::rest -> 
-			let cost = find_arc res_graph id1 id2 in
+			let cost = find_arc residual_graph id1 id2 in
 				match cost with
-					| None -> raise Not_found (* à modifier ! *)
-					| Some (_,cost) -> if (cost<acu) then find_min_arc res_graph (id2::rest) cost 
-									else find_min_arc res_graph (id2::rest) acu
+					| None -> raise Not_found
+					| Some (_,cost) -> if (cost<acu) then find_min_arc residual_graph (id2::rest) cost 
+									else find_min_arc residual_graph (id2::rest) acu
 
 (*let convert_Nodepath_to_Arcpath path = match path with
 	| [] -> []
 	| id2::id1::rest -> 
 	| _ -> []
-
-let update_flow_graph flow_graph path increment =
-
 *)
-(*	let rec loop path graph = 
+
+let update_residual_graph flow_graph path increment =
+
+let rec loop path graph = 
 		match path with
 			| [] -> graph
 			| id1::id2::rest -> 
@@ -66,7 +66,7 @@ let update_flow_graph flow_graph path increment =
 				(*let graph_arc = find_arc graph id2 id1 in *)
 	in loop path empty_graph
 
-*)
+
 (*let rec create_residual_graph graph1 graph2 = *)
 
 
