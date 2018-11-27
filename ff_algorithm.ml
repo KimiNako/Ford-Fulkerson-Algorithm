@@ -93,7 +93,7 @@ let update_residual_graph residual_graph path min =
 						| None -> raise Not_found
 						| Some (capacity, value) -> 
 							let new_graph = add_arc residual_graph id1 id2 (capacity, value-min) in
-							let new_graph2 = add_arc new_graph id2 id1 (capacity, value+min) in
+							let new_graph2 = add_arc new_graph id2 id1 (capacity, capacity-value+min) in
 							loop (id2::rest) new_graph2
 
     in loop path residual_graph
@@ -186,7 +186,7 @@ let () =
 
 	(* Print flow of the graph *)
 	let max_flow = calculate_max_flow res_graph_int _sink in 
-	Printf.printf "Flow : %d" max_flow;
+	Printf.printf "Flow : %d\n" max_flow;
 
 
 (*
