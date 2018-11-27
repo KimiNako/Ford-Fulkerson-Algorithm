@@ -107,6 +107,7 @@ let init_residual_graph graph = map graph (fun x -> (x,x))
 
 (* arc label of flow_graph : (capacity[fixed], value) *)
 
+
 let ford_fulkerson_algorithm (graph, source, sink) =
     let flow_graph = init_flow_graph graph in
 	let residual_graph = init_residual_graph graph in
@@ -152,13 +153,36 @@ let () =
 	let res_graph = init_residual_graph graph in
 
 
-	(* Test find_path *)
-  let graph_int = Graph.map res int_of_string in
-  	let path2 = find_path graph_int [] _source _sink in
+	(* Test find_path in a residual graph*)
+  let res_graph_int = Graph.map res_graph (fun (a,b) -> (int_of_string a,int_of_string b)) in
+  	let path2 = find_path res_graph_int [] _source _sink in
 			Printf.printf "Path found :";
 			let () = List.iter (fun x -> Printf.printf "%s" x) path2 in 
 			();
 			Printf.printf "\n\n";
+
+	(* Write Residual graph in dot format *)
+	let res_graph_str = Graph.map res_graph (fun (a,b) -> (a^","^b)) in
+  let () = Gfile.export res_graph_str (outfile^"_res.gv") in ();
+
+	(* Print min of the path *)
+	let min = find_min_arc res_graph_int path2 (-1) in 	
+	Printf.printf "Path :";
+	let () = List.iter (fun x -> Printf.printf "%s" x) path2 in ();
+	Printf.printf "\n";
+	Printf.printf "Increment : %d" min;
+	Printf.printf "\n\n";
+
+	(* Write Updated residual graph in dot format *)
+	let res_graph_update = update_residual_graph res_graph_int path2 min in
+	let res_graph_update_str = Graph.map res_graph_update (fun (a,b) -> ((string_of_int a)^","^(string_of_int b))) in
+  let () = Gfile.export res_graph_update_str (outfile^"_updated_res.gv") in ();
+
+	(* Print flow of the graph *)
+	let max_flow = calculate_max_flow res_graph_int _sink in 
+	Printf.printf "Flow : %d" max_flow;
+
+
 (*
 (* Test find_min_arc *)
 	let res_graph = Graph.empty_graph in
