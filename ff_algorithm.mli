@@ -5,20 +5,17 @@ open Graph
 
 (* A path is a list of nodes. *)
 type path = id list
+type source = id
+type sink =id
 
 type capacity
 type value
-type flow
-type residual_graph
+type max_flow
 
-(* find_path graph [] source sink *)
-(* Find a path beetween source and sink *)
-(* Return [] if no path found *)
-val find_path: residual_graph -> id list -> id -> id -> path
+type flow_graph = (capacity * value) graph
 
+type problem = (int graph * source * sink)
+type solution = (flow_graph * max_flow)
 
-(* Return the smallest label among all labels of a given path from the residual graph *)
-(* Find the incrementation of flow *)
-val find_min_arc : residual_graph -> id list -> value -> value
-
-val ford_fulkerson_algorithm : 'a graph -> id -> id -> flow
+(* Return the flow graph with the maximum of flow *)
+val ford_fulkerson_algorithm : problem -> solution

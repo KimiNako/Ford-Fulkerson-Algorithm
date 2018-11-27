@@ -3,7 +3,8 @@ open Graph
 type path = id list
 type capacity = int
 type value = int
-type flow = int
+type max_flow = int
+type flow_graph = (capacity * value) graph
 type residual_graph = (capacity * value) graph
 
 (* Return a path going from source to sink but the order of nodes is reversed. *)
@@ -31,10 +32,15 @@ let rec find_path_bis graph path source sink =
 									| aux -> aux (* a path has been found ! *)
 		in loop arcs_src
 
-(* Return a path going from source to sink *)
+(* find_path graph [] source sink *)
+(* Find a path from the source to the sink *)
+(* Return [] if no path found *)
 let find_path graph path source sink =
 	List.rev (find_path_bis graph path source sink)
 
+
+(* Return the smallest label among all labels of a given path from the residual graph *)
+(* Find the incrementation of flow *)
 let rec find_min_arc residual_graph path acu =
 	match path with
 		| [] -> acu
@@ -52,21 +58,36 @@ let rec find_min_arc residual_graph path acu =
 	| _ -> []
 *)
 
+let update_flow_graph flow_graph path min =
+    (* update modified arcs *)
+    let rec loop path flow_graph = 
+		match path with
+			| [] -> flow_graph
+			| _::[]-> flow_graph
+			| id1::id2::rest -> 
+				let flow_arc = find_arc flow_graph id1 id2 in
+					match flow_arc with
+						| None -> raise Not_found
+						| Some (capacity, value) -> 
+							let new_graph = add_arc flow_graph id1 id2 (capacity, value+min) in
+							loop (id2::rest) new_graph
+
+    in loop path flow_graph
 
 
 let update_residual_graph residual_graph path min =
-    (* create modified arcs *)
+    (* update modified arcs *)
     let rec loop path residual_graph = 
 		match path with
 			| [] -> residual_graph
-			|_::[]-> residual_graph
+			|  _::[]-> residual_graph
 			| id1::id2::rest -> 
 				let residual_arc = find_arc residual_graph id1 id2 in
 					match residual_arc with
 						| None -> raise Not_found
 						| Some (capacity, value) -> 
-							let new_graph = add_arc residual_graph id1 id2 (capacity, value+min) in
-							let new_graph2 = add_arc new_graph id2 id1 (capacity, value-min) in
+							let new_graph = add_arc residual_graph id1 id2 (capacity, value-min) in
+							let new_graph2 = add_arc new_graph id2 id1 (capacity, value+min) in
 							loop (id2::rest) new_graph2
 
     in loop path residual_graph
@@ -79,23 +100,27 @@ let calculate_max_flow residual_graph sink =
 		| (id,(capa,label))::rest -> label+(max rest)
 		in max arcs_src
 
+let init_flow_graph graph = map graph (fun x -> (x,0))
 
 let init_residual_graph graph = map graph (fun x -> (x,x))
 	
 
-
 (* arc label of flow_graph : (capacity[fixed], value) *)
 
-let ford_fulkerson_algorithm graph source sink =
+let ford_fulkerson_algorithm (graph, source, sink) =
+    let flow_graph = init_flow_graph graph in
 	let residual_graph = init_residual_graph graph in
-	let rec loop residual_graph =
+	let rec loop flow_graph residual_graph =
 		let path = find_path residual_graph [] source sink in
             match path with
-                | [] -> calculate_max_flow residual_graph sink (* There are no more path so we calculate flow *)
+                | [] -> 
+                    let max_flow = calculate_max_flow residual_graph sink in (* There are no more path so we calculate flow *)
+                    (flow_graph, max_flow)
                 | path ->
 		            let min = find_min_arc residual_graph path (-1) in 
+                    let new_flow_graph = update_flow_graph flow_graph path min in
                     let new_residual_graph = update_residual_graph residual_graph path min in
-                    loop residual_graph
+                    loop new_flow_graph new_residual_graph
     in loop residual_graph
 	
 
