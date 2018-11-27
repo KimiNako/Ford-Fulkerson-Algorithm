@@ -1,1 +1,2 @@
-Revoir la paire de flot (capcity, value) -> pb d'initialisation
+Revoir le graphe de flot final
+et les paramètres pour la loop finale dans le ff_algo
