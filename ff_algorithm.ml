@@ -37,7 +37,7 @@ let find_path graph path source sink =
 
 let rec find_min_arc residual_graph path acu =
 	match path with
-		| [] 
+		| [] -> acu
 		| _::[] -> acu
 		| id1::id2::rest -> 
 			let cost = find_arc residual_graph id1 id2 in
@@ -93,7 +93,7 @@ let ford_fulkerson_algorithm graph source sink =
             match path with
                 | [] -> calculate_max_flow residual_graph sink (* There are no more path so we calculate flow *)
                 | path ->
-		            let min = find_min_arc residual_graph path -1 in 
+		            let min = find_min_arc residual_graph path (-1) in 
                     let new_residual_graph = update_residual_graph residual_graph path min in
                     loop residual_graph
     in loop residual_graph
