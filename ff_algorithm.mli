@@ -14,11 +14,12 @@ type max_flow
 
 type flow_graph = (capacity * value) graph
 
+(*
 type problem = (int graph * source * sink)
-type solution = (flow_graph * max_flow)
+type solution = (flow_graph * max_flow) *)
 
 
 (* Return the flow graph with the maximum of flow *)
-val ford_fulkerson_algorithm : problem -> solution
+val ford_fulkerson_algorithm : (int graph * source * sink) -> (flow_graph * max_flow)
 
 
