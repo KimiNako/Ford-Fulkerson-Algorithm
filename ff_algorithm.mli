@@ -10,7 +10,7 @@ type sink =id
 
 type capacity
 type value
-type max_flow
+type max_flow = int
 
 type flow_graph = (capacity * value) graph
 
