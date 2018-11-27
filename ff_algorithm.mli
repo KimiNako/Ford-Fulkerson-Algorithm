@@ -20,6 +20,7 @@ type solution = (flow_graph * max_flow) *)
 
 
 (* Return the flow graph with the maximum of flow *)
+
 val ford_fulkerson_algorithm : (int graph * source * sink) -> (flow_graph * max_flow)
 
 
