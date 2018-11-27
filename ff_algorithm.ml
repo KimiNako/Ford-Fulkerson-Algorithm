@@ -2,7 +2,7 @@ open Graph
     
 
 type path = id list
-type source = id
+(*type source = id
 type sink =id
 
 type capacity = int
@@ -12,7 +12,7 @@ type flow_graph = (capacity * value) graph
 type residual_graph = (capacity * value) graph
 type problem = (int graph * source * sink)
 type solution = (flow_graph * max_flow)
-
+*)
 (* Return a path going from source to sink but the order of nodes is reversed. *)
 let rec find_path_bis graph path source sink =
  
@@ -113,7 +113,6 @@ let init_residual_graph graph = map graph (fun x -> (x,x))
 
 (* arc label of flow_graph : (capacity[fixed], value) *)
 
-(*
 let ford_fulkerson_algorithm (graph, source, sink) =
     let flow_graph = init_flow_graph graph in
 	let residual_graph = init_residual_graph graph in
@@ -128,10 +127,9 @@ let ford_fulkerson_algorithm (graph, source, sink) =
                     let new_flow_graph = update_flow_graph flow_graph path min in
                     let new_residual_graph = update_residual_graph residual_graph path min in
                     loop new_flow_graph new_residual_graph
-    in loop residual_graph
+    in loop residual_graph residual_graph (* LES BONS PARAMETRES ?*)
 	
 
-*)
 
 (* -----------------------------------------------*)
 (* --------------- TESTS -------------------------*)
@@ -185,7 +183,7 @@ let () =
   let () = Gfile.export res_graph_update_str (outfile^"_updated_res.gv") in ();
 
 	(* Print flow of the graph *)
-	let max_flow = calculate_max_flow res_graph_int _sink in 
+	let max_flow = calculate_max_flow res_graph_update _sink in 
 	Printf.printf "Flow : %d\n" max_flow;
 
 
