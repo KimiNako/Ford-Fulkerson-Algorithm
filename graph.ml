@@ -43,8 +43,8 @@ let v_fold gr f acu = List.fold_left (fun acu (id, out) -> f acu id out) acu gr
 
 (* Return a list of nodes for a given graph*)
 let rec create_nodes acu gr = match gr with
-  |[]-> acu
-  |(id, out_arc)::rest -> create_nodes (add_node acu id)  rest
+  | []-> acu
+  | (id, out_arc)::rest -> create_nodes (add_node acu id)  rest
 
 (* Return a list of arcs
  * Apply function f on their labels *)
