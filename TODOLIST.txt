@@ -1,0 +1,1 @@
+Revoir la paire de flot (capcity, value) -> pb d'initialisation
