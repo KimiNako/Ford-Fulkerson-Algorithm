@@ -10,7 +10,7 @@ let () =
     end ;
 
   let infile = Sys.argv.(1)
-  and outfile = Sys.argv.(4)
+  and outfile = "Tests/"^Sys.argv.(4)
   
   (* These command-line arguments are not used for the moment. *)
   and _source = Sys.argv.(2)

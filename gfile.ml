@@ -83,7 +83,7 @@ let rec looparc acu id outarcs =
 
 (* Export/Write a graph in a file*) 
 let export gr path = 
-	let ff= open_out path in
+	let ff= open_out ("Tests/GV_files/"^path) in
 	let arcs = v_fold gr looparc "" in
 	fprintf ff "digraph finite_state_machine {\n
 	rankdir=LR;\n
