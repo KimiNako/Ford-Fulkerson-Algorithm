@@ -127,7 +127,7 @@ let ford_fulkerson_algorithm (graph, source, sink) =
                     let new_flow_graph = update_flow_graph flow_graph path min in
                     let new_residual_graph = update_residual_graph residual_graph path min in
                     loop new_flow_graph new_residual_graph
-    in loop residual_graph residual_graph (* LES BONS PARAMETRES ?*)
+    in loop flow_graph residual_graph (* LES BONS PARAMETRES ?*)
 	
 
 
