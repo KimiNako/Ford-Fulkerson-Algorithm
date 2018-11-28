@@ -1,3 +1,6 @@
 open Ff_agorithm
 
-val : 
+type infile = string
+type outfile = string
+
+val bipartite_matching_algorithm : infile -> outfile -> ()
