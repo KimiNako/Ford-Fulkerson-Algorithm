@@ -35,6 +35,6 @@ let () =
   let problem = (graph3, _source, _sink) in
   let (flow_graph, max_flow) = ford_fulkerson_algorithm problem in
   Printf.printf "Maximum of flow : %d \n" max_flow ;
-	let flow_graph_str = Graph.map flow_graph (fun (a,b) -> ((string_of_int a)^","^(string_of_int b))) in
+	let flow_graph_str = Graph.map flow_graph (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in
   let () = Gfile.export flow_graph_str (outfile^"_flow_graph.gv") in ();
 

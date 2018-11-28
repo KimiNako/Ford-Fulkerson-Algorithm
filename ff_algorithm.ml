@@ -166,7 +166,7 @@ let () =
 			Printf.printf "\n\n";
 
 	(* Write Residual graph in dot format *)
-	let res_graph_str = Graph.map res_graph (fun (a,b) -> (a^","^b)) in
+	let res_graph_str = Graph.map res_graph (fun (a,b) -> (b^"/"^a)) in
   let () = Gfile.export res_graph_str (outfile^"_res.gv") in ();
 
 	(* Print min of the path *)
@@ -179,7 +179,7 @@ let () =
 
 	(* Write Updated residual graph in dot format *)
 	let res_graph_update = update_residual_graph res_graph_int path2 min in
-	let res_graph_update_str = Graph.map res_graph_update (fun (a,b) -> ((string_of_int a)^","^(string_of_int b))) in
+	let res_graph_update_str = Graph.map res_graph_update (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in
   let () = Gfile.export res_graph_update_str (outfile^"_updated_res.gv") in ();
 
 	(* Print flow of the graph *)
