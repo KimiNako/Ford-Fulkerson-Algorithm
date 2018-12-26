@@ -35,7 +35,7 @@ let read_arc graph line =
 
 
 
-(* Read a file which contains bipartite graph and return string graph that is associated *)
+(* Read a file which contains bipartite graph and return (int*int) graph that is associated *)
 let create_bipartite_graph path = 
 let infile = open_in path in
 	let rec loop graph = 
