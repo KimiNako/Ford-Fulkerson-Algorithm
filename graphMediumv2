@@ -1,0 +1,19 @@
+s Anne
+s Bob
+s Caroline
+
+o INSA 1
+o INP 1
+o ENAC 2
+
+p Anne 1 INSA
+p Anne 2 INP
+
+p Bob 1 ENAC
+p Bob 2	INP
+
+p Caroline 1 INSA
+p Caroline 2 ENAC
+
+
+

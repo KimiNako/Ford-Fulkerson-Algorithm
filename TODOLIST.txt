@@ -1,4 +1,4 @@
-Commandes : 
+Commands : 
 
 BUILD : 
 make   
@@ -10,3 +10,6 @@ EXECUTE :
 
 CONVERT IN DOT FILE :
 make dot
+
+CLEAR TESTS repository:
+make clear

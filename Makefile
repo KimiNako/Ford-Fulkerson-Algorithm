@@ -12,3 +12,5 @@ dot:
 	dot -Tpng Tests/GV_files/TEST_updated_res.gv > Tests/PNG_files/TEST_updated_res.png
 	dot -Tpng Tests/GV_files/TEST_flow_graph.gv > Tests/PNG_files/TEST_flow_graph.png
 
+clear:
+	rm -r Tests/

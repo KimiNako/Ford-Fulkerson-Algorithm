@@ -1,14 +1,61 @@
-open Ff_agorithm
-
+open Ff_algorithm
+open Graph
 type infile = string
 type outfile = string
+type path = string
 
 (* Create the graph_file and return its name *)
-let create_graph_file infile =
+(* Convert bipartite graph into (V,E) format *)
+(*
+let create_graph_file path =
+	let infile = open_in path
 
+(* ????????? *)
 let create_output_file flow_graph outfile =
+*)
 
 
+let read_node graph line is_student= 
+	if is_student then 
+	(* Read student nodes *)
+		try Scanf.sscanf line "s %s" (fun name_student -> let newgraph = add_node graph name_student in add_arc newgraph "s" name_student (0,1))
+		with e -> Printf.printf "Cannot read node in line - %s:\n%s\n" (Printexc.to_string e) line ;
+    failwith "create_bipartite_graph"
+	else
+	(* Read wish nodes *)
+	try Scanf.sscanf line "o %s %d" (fun wish capacity-> let newgraph = add_node graph wish in add_arc newgraph wish "p" (0,capacity))
+	with e -> Printf.printf "Cannot read node in line - %s:\n%s\n" (Printexc.to_string e) line ;
+    failwith "create_bipartite_graph"
+
+(* Associate student to wishes *)
+let read_arc graph line = 
+	try Scanf.sscanf line "p %s %d %s" (fun name_student rank wish -> add_arc graph name_student wish (0,rank)) (* REVIEW THIS LABEL !!!!!!!!!!*)
+	with e -> Printf.printf "Cannot read arc in line - %s:\n%s\n" (Printexc.to_string e) line ;
+    failwith "create_bipartite_graph"
+
+
+
+(* Read a file which contains bipartite graph and return string graph that is associated *)
+let create_bipartite_graph path = 
+let infile = open_in path in
+	let rec loop graph = 
+		try
+			let line = input_line infile in 
+			let graph2 =
+				if line ="" then graph
+				else match line.[0] with
+					| 's'-> read_node graph line true
+					| 'o'-> read_node graph line false
+					| 'p' -> read_arc graph line
+					| _ -> graph
+		in loop graph2
+		with End_of_file -> graph
+	in
+	let final_graph = loop empty_graph in
+	close_in infile ;
+  	final_graph
+
+(*
 let bipartite_matching_algorithm infile outfile =
     let graph_file = create_graph_file infile in
     let string_graph = Gfile.from_file graph_file in
@@ -20,3 +67,4 @@ let bipartite_matching_algorithm infile outfile =
     let () = Gfile.export flow_graph_str (outfile^"_flow_graph.gv") in ();
     let () = create_output_file flow_graph outfile in ()
     
+*)
