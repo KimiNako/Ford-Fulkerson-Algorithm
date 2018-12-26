@@ -1,2 +1,12 @@
-Revoir le graphe de flot final
-et les paramètres pour la loop finale dans le ff_algo
+Commandes : 
+
+BUILD : 
+make   
+
+EXECUTE :
+./ftest.byte graph1 0 5 TEST
+./ff_algorithm.byte graph1 0 5 TEST
+
+
+CONVERT IN DOT FILE :
+make dot
