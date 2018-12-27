@@ -134,14 +134,14 @@ let ford_fulkerson_algorithm (graph, source, sink) =
 (* -----------------------------------------------*)
 (* --------------- TESTS -------------------------*)
 (*------------------------------------------------*)
-
+(*
 
 
 let () =
 
   if Array.length Sys.argv <> 5 then
     begin
-      Printf.printf "\nUsage: %s infile source sink outfile\n\n%!" Sys.argv.(0) ;
+      Printf.printf "\nFF Usage: %s infile source sink outfile\n\n%!" Sys.argv.(0) ;
       exit 0
     end ;
 
@@ -184,7 +184,7 @@ let () =
 
 	(* Print flow of the graph *)
 	let max_flow = calculate_max_flow res_graph_update _sink in 
-	Printf.printf "Flow : %d\n" max_flow;
+	Printf.printf "Flow : %d\n" max_flow;;
 
 
 (*
@@ -202,4 +202,5 @@ let () =
 	let path3 = find_path res_graph [] "0" "3" in
 	let min = find_min_arc res_graph path3 -1 in ();
 
+*)
 *)
