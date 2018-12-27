@@ -18,7 +18,7 @@ let out_arcs gr id =
 let find_arc gr id1 id2 =
   let out = out_arcs gr id1 in
   try Some (List.assoc id2 out)
-  with Not_found -> None
+  with Not_found -> Printf.printf("here");None
 
 let add_node gr id =
   if node_exists gr id then raise (Graph_error ("Node " ^ id ^ " already exists in the graph."))

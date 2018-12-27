@@ -73,10 +73,10 @@ let bipartite_matching_algorithm infile outfile =
 
 let bipartite_matching_algorithm path outfile =
     let graph = create_bipartite_graph path in
-    let problem = (graph, "s", "p") in
+    (*let problem = (graph, "s", "p") in
     let (flow_graph, max_flow) = ford_fulkerson_algorithm problem in
     Printf.printf "Maximum of assignments : %d \n" max_flow ;
-	let flow_graph_str = Graph.map flow_graph (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in
+	*)let flow_graph_str = Graph.map graph (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in
     let () = Gfile.export flow_graph_str (outfile^"_flow_graph.gv") in ()
 
 
