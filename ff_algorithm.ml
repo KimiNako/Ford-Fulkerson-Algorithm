@@ -115,7 +115,12 @@ let init_residual_graph graph = map graph (fun x -> (x,x))
 
 let ford_fulkerson_algorithm (graph, source, sink) =
     let flow_graph = init_flow_graph graph in
-	let residual_graph = init_residual_graph graph in
+	let residual_graph = init_residual_graph graph in 
+
+(*ADD TEST TO CHECK RES GRAPH FOR BIPARTITE PB *)
+let res_gr_str = Graph.map residual_graph (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in Gfile.export res_gr_str ("res_graph.gv");
+
+
 	let rec loop flow_graph residual_graph =
 		let path = find_path residual_graph [] source sink in
             match path with
@@ -134,7 +139,7 @@ let ford_fulkerson_algorithm (graph, source, sink) =
 (* -----------------------------------------------*)
 (* --------------- TESTS -------------------------*)
 (*------------------------------------------------*)
-(*
+(* TO DO : PUT THESES TESTS IN ANOTHER FILE 
 
 
 let () =
