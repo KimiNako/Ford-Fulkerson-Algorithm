@@ -74,7 +74,9 @@ let bipartite_matching_algorithm infile outfile =
 (* Cmd : $ ocamlbuild bipartite_matching.byte 
 $ ./bipartite_matching.byte graphMediumv2 T
 *)
-(* PB with find_path in ff_algo , Res_graph ok *)
+(* PB with find_path in ff_algo , Res_graph ok 
+$ dot -Tpng Tests/GV_files/res_graph.gv > Tests/PNG_files/res.png
+*)
 
 let bipartite_matching_algorithm path outfile =
     let graph = create_bipartite_graph path in

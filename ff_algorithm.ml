@@ -123,6 +123,7 @@ let res_gr_str = Graph.map residual_graph (fun (a,b) -> ((string_of_int b)^"/"^(
 
 	let rec loop flow_graph residual_graph =
 		let path = find_path residual_graph [] source sink in
+			Printf.printf("Test\n");
             match path with
                 | [] -> 
                     let max_flow = calculate_max_flow residual_graph sink in (* There are no more path so we calculate flow *)
@@ -132,14 +133,14 @@ let res_gr_str = Graph.map residual_graph (fun (a,b) -> ((string_of_int b)^"/"^(
                     let new_flow_graph = update_flow_graph flow_graph path min in
                     let new_residual_graph = update_residual_graph residual_graph path min in
                     loop new_flow_graph new_residual_graph
-    in loop flow_graph residual_graph (* LES BONS PARAMETRES ?*)
+    in loop flow_graph residual_graph 
 	
 
 
 (* -----------------------------------------------*)
 (* --------------- TESTS -------------------------*)
 (*------------------------------------------------*)
-(* TO DO : PUT THESES TESTS IN ANOTHER FILE 
+(* TO DO : PUT THESES TESTS IN ANOTHER FILE (because we have conflicts with bipartite test)
 
 
 let () =
