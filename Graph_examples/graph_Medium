@@ -1,0 +1,16 @@
+s Anne
+s Barbara
+s Caroline
+
+o Didier 1
+o Eric 1
+o François 1
+
+p Anne 1 Didier
+p Anne 1 Eric
+
+p Barbara 1 François
+p Barbara 1	Eric
+
+p Caroline 1 François
+p Caroline 1 Didier

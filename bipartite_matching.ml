@@ -3,21 +3,21 @@ open Graph
 type infile = string
 type outfile = string
 
-let read_node graph line is_student= 
-	if is_student then 
-	(* Read student nodes *)
-		try Scanf.sscanf line "s %s" (fun name_student -> let newgraph = add_node graph name_student in add_arc newgraph "s" name_student 1)
+let read_node graph line is_girl= 
+	if is_girl then 
+	(* Read girl nodes *)
+		try Scanf.sscanf line "s %s" (fun girl -> let newgraph = add_node graph girl in add_arc newgraph "s" girl 1)
 		with e -> Printf.printf "Cannot read node in line - %s:\n%s\n" (Printexc.to_string e) line ;
     failwith "create_bipartite_graph"
 	else
-	(* Read wish nodes *)
-	try Scanf.sscanf line "o %s %d" (fun wish capacity-> let newgraph = add_node graph wish in add_arc newgraph wish "p" capacity)
+	(* Read boy nodes *)
+	try Scanf.sscanf line "o %s %d" (fun boy capacity-> let newgraph = add_node graph boy in add_arc newgraph boy "p" capacity)
 	with e -> Printf.printf "Cannot read node in line - %s:\n%s\n" (Printexc.to_string e) line ;
     failwith "create_bipartite_graph"
 
-(* Associate student to wishes *)
+(* Associate girls to boys *)
 let read_arc graph line = 
-	try Scanf.sscanf line "p %s %d %s" (fun name_student rank wish -> add_arc graph name_student wish rank) (* REVIEW THIS LABEL !!!!!!!!!!*)
+	try Scanf.sscanf line "p %s %d %s" (fun girl wish boy -> add_arc graph girl boy wish) 
 	with e -> Printf.printf "Cannot read arc in line - %s:\n%s\n" (Printexc.to_string e) line ;
     failwith "create_bipartite_graph"
 
@@ -45,35 +45,17 @@ let infile = open_in path in
 	close_in infile ;
   	final_graph
 
-(* Cmd : $ ocamlbuild bipartite_matching.byte 
-$ ./bipartite_matching.byte graphMediumv2 T
-*)
-(*
-$ dot -Tpng Tests/GV_files/res_graph.gv > Tests/PNG_files/res.png
-*)
 
 let bipartite_matching_algorithm infile outfile =
     let graph = create_bipartite_graph infile in
     let problem = (graph, "s", "p") in
     let (flow_graph, max_flow) = ford_fulkerson_algorithm problem in
-    Printf.printf "Maximum of assignments : %d \n" max_flow ;
+	Printf.printf "Exepected : Maximum of assignments : 3 \n";
+    Printf.printf "Obtained : Maximum of assignments : %d \n\n" max_flow ;
 	let flow_graph_str = Graph.map flow_graph (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in
-    let () = Gfile.export flow_graph_str (outfile^"_flow_graph.gv") in ()
+    let () = Gfile.export flow_graph_str (outfile^"_bp_flow_graph.gv") in ()
 
 
 
-(* -----------------------------------------------*)
-(* --------------- TESTS -------------------------*)
-(*------------------------------------------------*)
-let () =
-
-  if Array.length Sys.argv <> 3 then
-    begin
-      Printf.printf "\nUsage: %s infile outfile\n\n%!" Sys.argv.(0) ;
-      exit 0
-    end ;
-  	let path = Sys.argv.(1)
-  	and outfile = Sys.argv.(2)
-	in bipartite_matching_algorithm path outfile;;
 
 

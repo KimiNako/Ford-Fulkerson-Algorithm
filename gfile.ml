@@ -13,7 +13,7 @@ type path = string
 let write_file path graph =
 
   (* Open a write-file. *)
-  let ff = open_out path in
+  let ff = open_out ("Tests/"^path) in
 
   (* Write in this file. *)
   fprintf ff "=== Graph file ===\n\n" ;

@@ -9,7 +9,7 @@ let () =
       exit 0
     end ;
 
-  let infile = Sys.argv.(1)
+  let infile = "Graph_examples/"^Sys.argv.(1)
   and outfile = Sys.argv.(4)
   
   (* These command-line arguments are not used for the moment. *)
@@ -21,20 +21,19 @@ let () =
   let graph = Gfile.from_file infile in
 
   (* Test map : add "0" at the end of every label *)
+	Printf.printf "\n------Test : Map : add \"0\" at the end of every label------\n";
+	Printf.printf "------Check %s_map.gv file in Tests/GV_files repository-----\n\n" outfile;
   let graph2 = Graph.map graph (fun x -> x^"0") in
 
   (* Rewrite the graph that has been read. *)
+	Printf.printf "\n------Test : Write_file : rewrite the graph that has been read------\n";
+	Printf.printf "------Check %s file in Tests repository------\n\n" outfile;
   let () = Gfile.write_file outfile graph in ();
 
   (* Test export : write graph in a dot format *)
+	Printf.printf "\n------Test : Export : write graph in a dot format------\n";
+	Printf.printf "------Check %s.gv and %s_map.gv files in Tests/GV_files repository------\n\n" outfile outfile;
   let () = Gfile.export graph2 (outfile^"_map.gv") in ();
   let () = Gfile.export graph (outfile^".gv") in  ();
-
-  (* Test : Ford_Fulkerson_Algorithm *)
-  let graph3 = Graph.map graph int_of_string in
-  let problem = (graph3, _source, _sink) in
-  let (flow_graph, max_flow) = ford_fulkerson_algorithm problem in
-  Printf.printf "Maximum of flow : %d \n" max_flow ;
-	let flow_graph_str = Graph.map flow_graph (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in
-  let () = Gfile.export flow_graph_str (outfile^"_flow_graph.gv") in ();
+	Printf.printf "------Advice : Do \"make dot_ftest\" in your terminal to visualize these graphs in png format and find them in PNG_files repository------\n\n";
 

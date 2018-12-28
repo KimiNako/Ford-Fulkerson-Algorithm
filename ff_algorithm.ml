@@ -1,18 +1,6 @@
 open Graph
-    
 
 type path = id list
-(*type source = id
-type sink =id
-
-type capacity = int
-type value = int
-type max_flow = int
-type flow_graph = (capacity * value) graph
-type residual_graph = (capacity * value) graph
-type problem = (int graph * source * sink)
-type solution = (flow_graph * max_flow)
-*)
 
 (* Return a path going from source to sink but the order of nodes is reversed. *)
 let rec find_path_bis graph path source sink =
@@ -120,11 +108,6 @@ let init_residual_graph graph = map graph (fun x -> (x,x))
 let ford_fulkerson_algorithm (graph, source, sink) =
     let flow_graph = init_flow_graph graph in
 	let residual_graph = init_residual_graph graph in 
-
-(*ADD TEST TO CHECK RES GRAPH FOR BIPARTITE PB *)
-let res_gr_str = Graph.map residual_graph (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in Gfile.export res_gr_str ("res_graph.gv");
-
-
 	let rec loop flow_graph residual_graph =
 		let path = find_path residual_graph [] source sink in
             match path with
@@ -138,78 +121,3 @@ let res_gr_str = Graph.map residual_graph (fun (a,b) -> ((string_of_int b)^"/"^(
                     loop new_flow_graph new_residual_graph
     in loop flow_graph residual_graph 
 	
-
-
-(* -----------------------------------------------*)
-(* --------------- TESTS -------------------------*)
-(*------------------------------------------------*)
-(* TO DO : PUT THESES TESTS IN ANOTHER FILE (because we have conflicts with bipartite test)
-
-
-let () =
-
-  if Array.length Sys.argv <> 5 then
-    begin
-      Printf.printf "\nFF Usage: %s infile source sink outfile\n\n%!" Sys.argv.(0) ;
-      exit 0
-    end ;
-
-  let infile = Sys.argv.(1)
-  and outfile = Sys.argv.(4)
-  
-  (* These command-line arguments are not used for the moment. *)
-  and _source = Sys.argv.(2)
-  and _sink = Sys.argv.(3)
-  in
- 	(* Open file *)
-  let graph = Gfile.from_file infile in
-	let res_graph = init_residual_graph graph in
-
-
-	(* Test find_path in a residual graph*)
-  let res_graph_int = Graph.map res_graph (fun (a,b) -> (int_of_string a,int_of_string b)) in
-  	let path2 = find_path res_graph_int [] _source _sink in
-			Printf.printf "Path found :";
-			let () = List.iter (fun x -> Printf.printf "%s" x) path2 in 
-			();
-			Printf.printf "\n\n";
-
-	(* Write Residual graph in dot format *)
-	let res_graph_str = Graph.map res_graph (fun (a,b) -> (b^"/"^a)) in
-  let () = Gfile.export res_graph_str (outfile^"_res.gv") in ();
-
-	(* Print min of the path *)
-	let min = find_min_arc res_graph_int path2 (-1) in 	
-	Printf.printf "Path :";
-	let () = List.iter (fun x -> Printf.printf "%s" x) path2 in ();
-	Printf.printf "\n";
-	Printf.printf "Increment : %d" min;
-	Printf.printf "\n\n";
-
-	(* Write Updated residual graph in dot format *)
-	let res_graph_update = update_residual_graph res_graph_int path2 min in
-	let res_graph_update_str = Graph.map res_graph_update (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in
-  let () = Gfile.export res_graph_update_str (outfile^"_updated_res.gv") in ();
-
-	(* Print flow of the graph *)
-	let max_flow = calculate_max_flow res_graph_update _sink in 
-	Printf.printf "Flow : %d\n" max_flow;;
-
-
-(*
-(* Test find_min_arc *)
-	let res_graph = Graph.empty_graph in
-  let res_graph = Graph.add_node res_graph "0" in
-  let res_graph = Graph.add_node res_graph "1" in
-  let res_graph = Graph.add_node res_graph "2" in
-	let res_graph = Graph.add_node res_graph "3" in
-
-	let res_graph = Graph.add_arc res_graph "0" "1" (42,42)  in
-  let res_graph = Graph.add_arc res_graph "0" "2" (3,3)  in
-  let res_graph = Graph.add_arc res_graph "1" "2" (3,3)  in
-	let res_graph = Graph.add_arc res_graph "1" "3" (1,1) in
-	let path3 = find_path res_graph [] "0" "3" in
-	let min = find_min_arc res_graph path3 -1 in ();
-
-*)
-*)
