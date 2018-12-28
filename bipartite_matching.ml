@@ -2,18 +2,6 @@ open Ff_algorithm
 open Graph
 type infile = string
 type outfile = string
-type path = string
-
-(* Create the graph_file and return its name *)
-(* Convert bipartite graph into (V,E) format *)
-(*
-let create_graph_file path =
-	let infile = open_in path
-
-(* ????????? *)
-let create_output_file flow_graph outfile =
-*)
-
 
 let read_node graph line is_student= 
 	if is_student then 
@@ -57,29 +45,15 @@ let infile = open_in path in
 	close_in infile ;
   	final_graph
 
-(*
-let bipartite_matching_algorithm infile outfile =
-    let graph_file = create_graph_file infile in
-    let string_graph = Gfile.from_file graph_file in
-    let graph = Graph.map string_graph int_of_string in
-    let problem = (graph, "s", "p") in
-    let (flow_graph, max_flow) = ford_fulkerson_algorithm problem in
-    Printf.printf "Maximum of assignments : %d \n" max_flow ;
-	let flow_graph_str = Graph.map flow_graph (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in
-    let () = Gfile.export flow_graph_str (outfile^"_flow_graph.gv") in ();
-    let () = create_output_file flow_graph outfile in ()
-    
-*)
-
 (* Cmd : $ ocamlbuild bipartite_matching.byte 
 $ ./bipartite_matching.byte graphMediumv2 T
 *)
-(* PB with find_path in ff_algo , Res_graph ok 
+(*
 $ dot -Tpng Tests/GV_files/res_graph.gv > Tests/PNG_files/res.png
 *)
 
-let bipartite_matching_algorithm path outfile =
-    let graph = create_bipartite_graph path in
+let bipartite_matching_algorithm infile outfile =
+    let graph = create_bipartite_graph infile in
     let problem = (graph, "s", "p") in
     let (flow_graph, max_flow) = ford_fulkerson_algorithm problem in
     Printf.printf "Maximum of assignments : %d \n" max_flow ;
