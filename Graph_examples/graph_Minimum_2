@@ -1,0 +1,25 @@
+v S
+v S1
+v S2
+v A
+v B
+v C
+v D
+v E
+v P
+
+e "8" S S1
+e "7" S S2
+e "4" S1 A
+e "4" S1 B
+e "2" S2 B
+e "5" S2 C
+e "5" A D 
+e "1" A B
+e "4" B D
+e "3" B E
+e "2" C B
+e "3" C E
+e "4" D E
+e "6" D P
+e "8" E P

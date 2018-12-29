@@ -16,6 +16,7 @@ let () =
 	Printf.printf "------Check %s_bp_flow_graph.gv file in Tests/GV_files repository------\n\n" outfile;
 	Printf.printf "------Advice : Do \"make dot_bp_test\" in your terminal to visualize the graph in png format and find it in PNG_files repository------\n\n";
 	bipartite_matching_algorithm infile outfile;
+    Printf.printf "Expected : Maximum of assignments : 3 \n\n";
 
 
 

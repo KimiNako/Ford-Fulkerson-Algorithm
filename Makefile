@@ -23,6 +23,10 @@ dot_ff_algo_test:
 dot_bp_test:
 	dot -Tpng Tests/GV_files/TEST_bp_flow_graph.gv > Tests/PNG_files/TEST_bp_flow_graph.png
 
+
+dot_mc_test:
+	dot -Tpng Tests/GV_files/TEST_mc_flow_graph.gv > Tests/PNG_files/TEST_mc_flow_graph.png
+
 clear:
 	rm -r Tests/
 	rm *.byte

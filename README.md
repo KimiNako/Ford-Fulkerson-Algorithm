@@ -26,6 +26,12 @@ $ make dot_bp_test
 
 
 
+$ ./min_cost_test.byte graph_Better TEST
+
+$ make dot_mc_test
+
+
+
 
 
 **EXECUTE & TEST**
@@ -35,6 +41,8 @@ $ ./ftest.byte graph_Minimum 0 5 TEST
 $ ./ff_algorithm_test.byte graph_Minimum 0 5 TEST
 
 $ ./bipartite_matching_test.byte graph_Medium TEST
+
+$ ./min_cost_test.byte graph_Better TEST
 
 
 

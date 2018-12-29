@@ -11,8 +11,6 @@ val find_path : ('a * int) graph -> path -> id -> id -> path
 
 val find_min_arc : ('a*int) graph -> path -> int -> int
 
-val decremente : ('a*int) graph -> id -> id -> int -> ('a*int) graph
-
 (* Initialize flow or residual graph *)
 val init_flow_graph : 'a graph -> ('a*int) graph
 val init_residual_graph : 'a graph -> ('a*'a) graph

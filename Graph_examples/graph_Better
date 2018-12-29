@@ -1,6 +1,7 @@
 s Anne
 s Bob
 s Caroline
+s Emile
 
 o INSA 1
 o INP 1
@@ -14,3 +15,6 @@ p Bob 2	INP
 
 p Caroline 1 INSA
 p Caroline 2 ENAC
+
+p Emile 1 INP
+p Emile 2 ENAC

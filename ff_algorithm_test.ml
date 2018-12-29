@@ -12,7 +12,7 @@ let () =
   let infile = "Graph_examples/"^Sys.argv.(1)
   and outfile = Sys.argv.(4)
   
-  (* These command-line arguments are not used for the moment. *)
+  (* These command-line arguments are used in the test of Ford Fulkerson with graph1*)
   and _source = Sys.argv.(2)
   and _sink = Sys.argv.(3)
   in
@@ -58,16 +58,31 @@ let () =
 	Printf.printf "Expected : Flow : 4\n";
 	Printf.printf "Obtained : Flow : %d\n\n" max_flow;
 
-  (* Test : Ford_Fulkerson_Algorithm *)
+  (* Test : Ford_Fulkerson_Algorithm with graph1*)
   let graph2 = Graph.map graph int_of_string in
   let problem = (graph2, _source, _sink) in
   let (flow_graph, max_flow) = ford_fulkerson_algorithm problem in
-	Printf.printf "\n------Test : Ford_Fulkerson_Algorithm------\n\n";
+	Printf.printf "\n------Test : Ford_Fulkerson_Algorithm - graph1------\n\n";
 	Printf.printf "Expected : Maximum of flow : 23\n";
   Printf.printf "Obtained : Maximum of flow : %d \n\n" max_flow ;
   let flow_graph_str = Graph.map flow_graph (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in
 	Printf.printf "\n------Test : Write Ford_Fulkerson_Algorithm graph in dot format------\n";
 	Printf.printf "------Check %s_flow_graph.gv file in Tests/GV_files repository-----\n\n" outfile;
   let () = Gfile.export flow_graph_str (outfile^"_flow_graph.gv") in ();
-	Printf.printf "------Advice : Do \"make dot_ff_algo_test\" in your terminal to visualize these graphs in png format and find them in PNG_files repository------\n\n";
+
+  (* Test : Ford_Fulkerson_Algorithm with graph2*)
+     	(* Open file *)
+  let graph = Gfile.from_file (infile^"_2") in
+  let graph2 = Graph.map graph int_of_string in
+  let problem = (graph2, "S", "P") in
+  let (flow_graph, max_flow) = ford_fulkerson_algorithm problem in
+	Printf.printf "\n------Test : Ford_Fulkerson_Algorithm - graph 2------\n\n";
+	Printf.printf "Expected : Maximum of flow : 14\n";
+  Printf.printf "Obtained : Maximum of flow : %d \n\n" max_flow ;
+  let flow_graph_str = Graph.map flow_graph (fun (a,b) -> ((string_of_int b)^"/"^(string_of_int a))) in
+	Printf.printf "\n------Test : Write Ford_Fulkerson_Algorithm graph in dot format------\n";
+	Printf.printf "------Check %s2_flow_graph.gv file in Tests/GV_files repository-----\n\n" outfile;
+  let () = Gfile.export flow_graph_str (outfile^"2_flow_graph.gv") in ();
+	Printf.printf "\n------Advice : Do \"make dot_ff_algo_test\" in your terminal to visualize these graphs in png format and find them in PNG_files repository------\n\n";
+
 

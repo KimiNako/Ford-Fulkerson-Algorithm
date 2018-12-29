@@ -44,7 +44,7 @@ let rec find_min_arc residual_graph path acu =
 			let cost = find_arc residual_graph id1 id2 in
 				match cost with
 					| None -> raise Not_found
-					| Some (_,cost) -> if (acu==(-1) || cost<acu) then find_min_arc residual_graph (id2::rest) cost 
+					| Some (_,cost) -> if (acu=(-1) || cost<acu) then find_min_arc residual_graph (id2::rest) cost 
 									else find_min_arc residual_graph (id2::rest) acu
 
 let decremente flow_graph id1 id2 min =
