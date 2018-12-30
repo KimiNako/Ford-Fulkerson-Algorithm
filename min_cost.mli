@@ -13,4 +13,4 @@ val create_assignement_graph : string -> (capacity*cost) graph
 val busaker_gowen_algorithm : ((capacity * cost) graph * id * id) -> ((capacity * flow * cost) graph * flow * cost)
 
 (* From a file which contains a problem of assignments, find a solution with a the maximum flow and the minimum cost (the outfile is in dot format)*)
-val min_cost_algorithm : infile -> outfile -> unit
+val min_cost_max_flow_algorithm : infile -> outfile -> unit

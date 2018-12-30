@@ -16,6 +16,8 @@ $ make dot_ftest
 
 $ ./ff_algorithm_test.byte graph_Minimum 0 5 TEST
 
+$ ./ff_algorithm_test.byte graph_Minimum_2 0 5 TEST2
+
 $ make dot_ff_algo_test
 
 
@@ -39,6 +41,8 @@ $ make dot_mc_test
 $ ./ftest.byte graph_Minimum 0 5 TEST
 
 $ ./ff_algorithm_test.byte graph_Minimum 0 5 TEST
+
+$ ./ff_algorithm_test.byte graph_Minimum_2 0 5 TEST2
 
 $ ./bipartite_matching_test.byte graph_Medium TEST
 

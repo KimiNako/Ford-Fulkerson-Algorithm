@@ -125,10 +125,18 @@ let init_residual_graph graph = map graph (fun (capa,cost) -> (capa,capa,cost))
 let busaker_gowen_algorithm (graph, source, sink) =
     let flow_graph = init_flow_graph graph in
 	let residual_graph = init_residual_graph graph in 
+
+(* TEST RESIDUAL GRAPH OK *)
+(*Cmd : dot -Tpng Tests/GV_files/TESTT.gv > Tests/PNG_files/T.png*)
+	let residual_graph_str = Graph.map residual_graph (fun (a,b,c) -> ((string_of_int b)^"/"^(string_of_int a)^" ("^(string_of_int c)^")")) in
+	let () = Gfile.export residual_graph_str ("TESTT.gv") in
+
+
 	let rec loop flow_graph residual_graph total_cost =
+		
 		let (path, min_cost) = find_path residual_graph [] source sink in
             match path with
-                | [] -> 
+                | [] -> Printf.printf " loop\n";
                     let max_flow = calculate_max_flow residual_graph sink in (* There are no more path so we calculate flow *)
                     (flow_graph, max_flow, total_cost)
                 | path ->
@@ -138,11 +146,56 @@ let busaker_gowen_algorithm (graph, source, sink) =
                     loop new_flow_graph new_residual_graph (total_cost+min_cost*min_flow)
     in loop flow_graph residual_graph 0
 
+
+
+let read_node graph line is_student= 
+	if is_student then 
+	(* Read student nodes *)
+		try Scanf.sscanf line "s %s" (fun student -> let newgraph = add_node graph student in add_arc newgraph "s" student (1,0))
+		with e -> Printf.printf "Cannot read node in line - %s:\n%s\n" (Printexc.to_string e) line ;
+    failwith "create_assignement_graph"
+	else
+	(* Read school nodes *)
+	try Scanf.sscanf line "o %s %d" (fun school capacity-> let newgraph = add_node graph school in add_arc newgraph school "p" (capacity,0))
+	with e -> Printf.printf "Cannot read node in line - %s:\n%s\n" (Printexc.to_string e) line ;
+    failwith "create_assignement_graph"
+
+(* Associate students to schools *)
+let read_arc graph line = 
+	try Scanf.sscanf line "p %s %d %s" (fun student wish school -> add_arc graph student school (1,wish)) 
+	with e -> Printf.printf "Cannot read arc in line - %s:\n%s\n" (Printexc.to_string e) line ;
+    failwith "create_assignement_graph"
+
+
+
+(* Read a file which contains bipartite graph and return (int*int) graph that is associated *)
+let create_assignement_graph path =
+let infile = open_in path in
+	let rec loop graph = 
+		try
+			let line = input_line infile in 
+			let graph2 =
+				if line ="" then graph
+				else match line.[0] with
+					| 's'-> read_node graph line true
+					| 'o'-> read_node graph line false
+					| 'p' -> read_arc graph line
+					| _ -> graph
+		in loop graph2
+		with End_of_file -> graph
+	in
+	let start_graph = add_node empty_graph "s" in 
+	let start = add_node start_graph "p" in
+	let final_graph = loop start in
+	close_in infile ;
+  	final_graph
+
+
 (* From a file which contains a problem of assignments, find a solution with a the maximum flow and the minimum cost (the outfile is in dot format)*)
 let min_cost_max_flow_algorithm infile outfile =
-    let graph = create_flow_graph infile in 
+    let graph = create_assignement_graph infile in 
     let problem = (graph, "s", "p") in
-    let (flow_graph, max_flow, min_cost) = busker_gowen_algorithm problem in
+    let (flow_graph, max_flow, min_cost) = busaker_gowen_algorithm problem in
     Printf.printf "Obtained : Maximum of assignments : %d \n" max_flow ;
     Printf.printf "Obtained : Minimum cost : %d \n\n" min_cost ;
 	let flow_graph_str = Graph.map flow_graph (fun (a,b,c) -> ((string_of_int b)^"/"^(string_of_int a)^" ("^(string_of_int c)^")")) in
