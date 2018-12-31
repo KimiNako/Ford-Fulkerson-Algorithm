@@ -71,8 +71,7 @@ let () =
   let () = Gfile.export flow_graph_str (outfile^"_flow_graph.gv") in ();
 
   (* Test : Ford_Fulkerson_Algorithm with graph2*)
-     	(* Open file *)
-  let graph = Gfile.from_file (infile^"_2") in
+  let graph = Gfile.from_file (infile^"_2") in (* open file *)
   let graph2 = Graph.map graph int_of_string in
   let problem = (graph2, "S", "P") in
   let (flow_graph, max_flow) = ford_fulkerson_algorithm problem in
