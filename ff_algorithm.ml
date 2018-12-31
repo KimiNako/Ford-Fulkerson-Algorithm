@@ -35,7 +35,7 @@ let find_path graph path source sink =
 
 
 (* Return the smallest label among all labels of a given path from the residual graph *)
-(* Find the incrementation of flow *)
+(* Find the increment of flow *)
 let rec find_min_arc residual_graph path acu =
 	match path with
 		| [] -> acu
@@ -48,8 +48,8 @@ let rec find_min_arc residual_graph path acu =
 									else find_min_arc residual_graph (id2::rest) acu
 
 
-(* Decremente the value of the arc from id2 to id1 *)
-let decremente flow_graph id1 id2 min =
+(* Decrement the value of the arc from id2 to id1 *)
+let decrement flow_graph id1 id2 min =
     let flow_arc = find_arc flow_graph id2 id1 in
         match flow_arc with
             | None -> raise Not_found
@@ -68,12 +68,12 @@ let update_flow_graph flow_graph path min =
 					match flow_arc with
 						| None ->
                             (* if no arc found, the arc was in the other direction in the residual graph*)
-                            (* so we have to decremente *)
-                            Printf.printf(" -> Decrementation in the flow graph\n");
-                            let new_graph = decremente flow_graph id1 id2 min in
+                            (* so we have to decrement *)
+                            Printf.printf(" -> Decrement in the flow graph\n");
+                            let new_graph = decrement flow_graph id1 id2 min in
                                 loop (id2::rest) new_graph  
 						| Some (capacity, value) -> 
-                            (* incremente the value of the arc from id1 to id2 *)
+                            (* increment the value of the arc from id1 to id2 *)
 							let new_graph = add_arc flow_graph id1 id2 (capacity, value+min) in
 							loop (id2::rest) new_graph
 
@@ -126,7 +126,7 @@ let ford_fulkerson_algorithm (graph, source, sink) =
 		let path = find_path residual_graph [] source sink in
             match path with
                 | [] -> 
-                    let max_flow = calculate_max_flow residual_graph sink in (* There are no more path so we calculate flow *)
+                    let max_flow = calculate_max_flow residual_graph sink in (* There is no more path so we calculate flow *)
                     (flow_graph, max_flow)
                 | path ->
 		            let min = find_min_arc residual_graph path (-1) in 
