@@ -26,6 +26,6 @@ let () =
 	Printf.printf "------Check %s2_mc_flow_graph.gv file in Tests/GV_files repository------\n\n" outfile;
 	min_cost_max_flow_algorithm (infile^"2") (outfile^"2");
     Printf.printf "Expected : Maximum of assignments : 3 \n";
-    Printf.printf "Expected : Minimum cost :  4 \n\n";
+    Printf.printf "Expected : Minimum cost :  3 \n\n";
 
 	Printf.printf "------Advice : Do \"make dot_mc_test\" in your terminal to visualize the graphs in png format and find them in PNG_files repository------\n\n";
