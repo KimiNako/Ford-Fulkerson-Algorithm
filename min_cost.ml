@@ -12,11 +12,10 @@ type cost = int
  *)
 
 (* Return a path, with a minimum cost, going from source to sink but the order of nodes is reversed. *)
-let rec find_path_bis graph path source sink cost =
+let rec find_path_bis graph path source sink total_cost =
  
 	(* if the sink is achieved, the path and the minimum cost are returned *)
-	if (sink=source) then ((source::path), cost) 
-
+	if (sink=source) then ((source::path), total_cost)
 	(* else, a path is searched *)
 	else
 		let arcs_src = out_arcs graph source in
@@ -34,20 +33,21 @@ let rec find_path_bis graph path source sink cost =
                     (* the loop is continued *)
 					if (value = 0) || (List.exists (fun x -> (x=id)) path) then loop rest path min_cost
 					(* else a path through this node is searched *)
-					else let (path_aux, min_cost_aux) = find_path_bis graph (source::path) id sink (min_cost+cost) in
+					else let (path_aux, min_cost_aux) = find_path_bis graph (source::path) id sink (total_cost+cost) in
 								match path_aux with
 									| [] -> loop rest path min_cost (* no path, the research is continued *)
 									| path_aux -> (* a path has been found ! *)
                                         (* if the cost is minimal, update path and min_cost*)
-                                        if (min_cost=(-1) || min_cost_aux<min_cost) then loop rest path_aux min_cost_aux 
+                                        if (min_cost=(-1) || min_cost_aux<min_cost) then loop rest path_aux min_cost_aux
+                                        (* else, continue the loop *)
                                         else loop rest path min_cost
-		in loop arcs_src [] cost
+		in loop arcs_src path (-1)
 
 (* find_path graph [] source sink *)
 (* Find a path with a minimum cost from the source to the sink *)
 (* Return ([],(-1)) if no path found *)
 let find_path graph path source sink =
-    let (path2, min_cost) = find_path_bis graph path source sink (-1) in
+    let (path2, min_cost) = find_path_bis graph path source sink 0 in
 	(List.rev(path2), min_cost)
 
 
@@ -64,12 +64,16 @@ let rec find_min_arc residual_graph path acu =
 					| Some (_,label,_) -> if (acu=(-1) || label<acu) then find_min_arc residual_graph (id2::rest) label 
 									else find_min_arc residual_graph (id2::rest) acu
 
+
+(* Decremente the value of the arc from id2 to id1 *)
 let decremente flow_graph id1 id2 min =
     let flow_arc = find_arc flow_graph id2 id1 in
         match flow_arc with
             | None -> raise Not_found
 			| Some (capacity, value, cost) -> add_arc flow_graph id2 id1 (capacity, value-min, cost)
 
+
+(* Update flow graph *)
 let update_flow_graph flow_graph path min =
     (* update modified arcs *)
     let rec loop path flow_graph = 
@@ -80,16 +84,20 @@ let update_flow_graph flow_graph path min =
 				let flow_arc = find_arc flow_graph id1 id2 in
 					match flow_arc with
 						| None ->
+                            (* if no arc found, the arc was in the other direction in the residual graph*)
+                            (* so we have to decremente *)
                             Printf.printf(" -> Decrementation in the flow graph\n");
                             let new_graph = decremente flow_graph id1 id2 min in
                                 loop (id2::rest) new_graph  
 						| Some (capacity, value, cost) -> 
+                            (* incremente the value of the arc from id1 to id2 *)
 							let new_graph = add_arc flow_graph id1 id2 (capacity, value+min, cost) in
 							loop (id2::rest) new_graph
 
     in loop path flow_graph
 
 
+(* Update residual graph *)
 let update_residual_graph residual_graph path min =
     (* update modified arcs *)
     let rec loop path residual_graph = 
@@ -101,13 +109,16 @@ let update_residual_graph residual_graph path min =
 					match residual_arc with
 						| None -> raise Not_found
 						| Some (capacity, value, cost) -> 
+                            (* decremente the value on the arc from id1 to id2 *)
 							let new_graph = add_arc residual_graph id1 id2 (capacity, value-min, cost) in
+                            (* incremente the flow on the arc from id2 to id1 *)
 							let new_graph2 = add_arc new_graph id2 id1 (capacity, capacity-value+min, (-cost)) in
 							loop (id2::rest) new_graph2
 
     in loop path residual_graph
         
 
+(* Calculate max flow of a given graph *)
 let calculate_max_flow residual_graph sink = 
 	let arcs_src = out_arcs residual_graph sink in
 		let rec max = function
@@ -115,9 +126,11 @@ let calculate_max_flow residual_graph sink =
 		| (id,(capa,label,cost))::rest -> label+(max rest)
 		in max arcs_src
 
-(* arc label of flow_graph : (capacity, value, cost) *)
+
+(* Initialize flow graph *)
 let init_flow_graph graph = map graph (fun (capa,cost) -> (capa,0,cost))
 
+(* Initialize residual graph *)
 let init_residual_graph graph = map graph (fun (capa,cost) -> (capa,capa,cost))
 	
 
@@ -125,26 +138,20 @@ let init_residual_graph graph = map graph (fun (capa,cost) -> (capa,capa,cost))
 let busaker_gowen_algorithm (graph, source, sink) =
     let flow_graph = init_flow_graph graph in
 	let residual_graph = init_residual_graph graph in 
-
-(* TEST RESIDUAL GRAPH OK *)
-(*Cmd : dot -Tpng Tests/GV_files/TESTT.gv > Tests/PNG_files/T.png*)
-	let residual_graph_str = Graph.map residual_graph (fun (a,b,c) -> ((string_of_int b)^"/"^(string_of_int a)^" ("^(string_of_int c)^")")) in
-	let () = Gfile.export residual_graph_str ("TESTT.gv") in
-
-
-	let rec loop flow_graph residual_graph total_cost =
-		
-		let (path, min_cost) = find_path residual_graph [] source sink in
-            match path with
-                | [] -> Printf.printf " loop\n";
-                    let max_flow = calculate_max_flow residual_graph sink in (* There are no more path so we calculate flow *)
-                    (flow_graph, max_flow, total_cost)
-                | path ->
-		            let min_flow = find_min_arc residual_graph path (-1) in 
-                    let new_flow_graph = update_flow_graph flow_graph path min_flow in
-                    let new_residual_graph = update_residual_graph residual_graph path min_flow in
-                    loop new_flow_graph new_residual_graph (total_cost+min_cost*min_flow)
-    in loop flow_graph residual_graph 0
+    let residual_graph_str = 
+        Graph.map residual_graph (fun (a,b,c) -> ((string_of_int b)^"/"^(string_of_int a)^" ("^(string_of_int c)^")")) in
+	    let rec loop flow_graph residual_graph total_cost =
+		    let (path, min_cost) = find_path residual_graph [] source sink in
+                match path with
+                    | [] ->
+                        let max_flow = calculate_max_flow residual_graph sink in (* There are no more path so we calculate flow *)
+                        (flow_graph, max_flow, total_cost)
+                    | path ->
+		                let min_flow = find_min_arc residual_graph path (-1) in 
+                        let new_flow_graph = update_flow_graph flow_graph path min_flow in
+                        let new_residual_graph = update_residual_graph residual_graph path min_flow in
+                        loop new_flow_graph new_residual_graph (total_cost+min_cost*min_flow)
+        in loop flow_graph residual_graph 0
 
 
 
