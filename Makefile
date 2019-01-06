@@ -27,6 +27,7 @@ dot_bp_test:
 
 dot_mc_test:
 	dot -Tpng Tests/GV_files/TEST_mc_flow_graph.gv > Tests/PNG_files/TEST_mc_flow_graph.png
+	dot -Tpng Tests/GV_files/TEST2_mc_flow_graph.gv > Tests/PNG_files/TEST2_mc_flow_graph.png
 
 clear:
 	rm -r Tests/
